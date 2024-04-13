@@ -42,7 +42,7 @@ func parseConfig(config string) error {
 }
 
 func screen() {
-	if _, err := tea.NewProgram(newModel(), tea.WithAltScreen()).Run(); err != nil {
+	if _, err := tea.NewProgram(screen.NewModel(), tea.WithAltScreen()).Run(); err != nil {
 		fmt.Println("Error while running program:", err)
 		os.Exit(1)
 	}
