@@ -2,12 +2,12 @@ package main
 
 import (
 	"flag"
-	"fmt"
 	"os"
 
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/log"
 
+	"github.com/insequent/lets_go_mud/screen"
 	"github.com/insequent/lets_go_mud/telnet"
 )
 
@@ -34,16 +34,21 @@ func main() {
 	}
 
 	//client.StartAndListen()
-	screen()
+
+	// Start screen model
+	if f, err := tea.LogToFile("debug.log", "debug"); err != nil {
+		log.Fatalf("Error logging: %v\n", err)
+	} else {
+		defer f.Close()
+	}
+
+	s := tea.NewProgram(screen.NewModel(), tea.WithAltScreen())
+	if s.Run(); err != nil {
+		log.Print("Error while running program:", err)
+		os.Exit(1)
+	}
 }
 
 func parseConfig(config string) error {
 	return nil
-}
-
-func screen() {
-	if _, err := tea.NewProgram(screen.NewModel(), tea.WithAltScreen()).Run(); err != nil {
-		fmt.Println("Error while running program:", err)
-		os.Exit(1)
-	}
 }
